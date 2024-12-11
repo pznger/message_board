@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>用户登录</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input {
+      width: 95%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .error-message {
+      color: red;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .captcha-container {
+      display: flex;
+      align-items: center;
+    }
+    .captcha-input {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>用户登录</h1>
+
+<!-- 错误消息显示区域 -->
+<div th:if="${error}" class="error-message">
+  <p th:text="${error}">用户名或密码错误，请重试。</p>
+</div>
+
+<form th:action="@{/user/login}" method="post">
+  <label for="username">用户名:</label>
+  <input type="text" id="username" name="username" placeholder="请输入用户名" required/><br/>
+
+  <label for="password">密码:</label>
+  <input type="password" id="password" name="password" placeholder="请输入密码" required/><br/>
+
+  <div class="captcha-container">
+    <label for="captcha" class="captcha-input">验证码:</label>
+    <input type="text" id="captcha" name="captcha" placeholder="请输入验证码" required/>
+    <img id="captchaImage" src="/captcha" alt="验证码" onclick="reloadCaptcha()" style="cursor: pointer;"/>
+  </div>
+  <script>
+    function reloadCaptcha() {
+      const captchaImage = document.getElementById('captchaImage');
+      captchaImage.src = '/captcha?' + new Date().getTime(); // 防止缓存
+    }
+  </script><br/>
+
+  <button type="submit">登录</button>
+  <div class="register-link">
+    <p>还没有账号？ <a th:href="@{/user/register}">立即注册</a></p>
+  </div>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- 省略其他头部信息 -->
+  <title>今日天气</title>
+  <style>
+  body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7fa;
+  color: #333;
+  }
+
+  h1 {
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  margin: 0;
+  }
+
+  a {
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: bold;
+  }
+
+  a:hover {
+  text-decoration: underline;
+  }
+
+  .container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  form {
+  margin-bottom: 20px;
+  width: 800px;
+  }
+
+  form input[type="text"],
+  form select,
+  form button {
+  padding: 10px;
+  font-size: 1em;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  }
+
+  form button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  }
+
+  form button:hover {
+  background-color: #45a049;
+  }
+
+  ul {
+  list-style-type: none;
+  padding: 0;
+  }
+
+  li {
+  background-color: #fff;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  }
+
+  li:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  li a {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 10px;
+  }
+
+  li span {
+  display: block;
+  margin-top: 5px;
+  color: #777;
+  font-size: 0.9em;
+  }
+
+  .message-actions {
+  margin-top: 10px;
+  }
+
+  .message-actions a,
+  .message-actions button {
+  font-size: 0.9em;
+  padding: 5px 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 4px;
+  }
+
+  .message-actions a {
+  background-color: #f39c12;
+  }
+
+  .message-actions a:hover {
+  background-color: #e67e22;
+  }
+
+  .message-actions button {
+  background-color: #e74c3c;
+  border: none;
+  }
+
+  .message-actions button:hover {
+  background-color: #c0392b;
+  }
+
+  </style>
+</head>
+<body>
+<h1>今日天气 - 青岛</h1>
+<div class="container">
+  <p th:text="'每3小时更新一次'"></p>
+
+  <p><strong>当前温度:</strong> <span th:text="${temperature}"></span>°C</p>
+  <p><strong>天气:</strong> <span th:text="${weather}"></span></p>
+  <p><strong>风向:</strong> <span th:text="${windDirection}"></span></p>
+  <p><strong>风力:</strong> <span th:text="${windPower}"></span></p>
+  <p><strong>AQI指数:</strong> <span th:text="${aqi}"></span></p>
+</div>
+
+<div class="container">
+  <a href="/message/list" class="back-link">返回消息列表</a>
+</div>
+</body>
+</html>

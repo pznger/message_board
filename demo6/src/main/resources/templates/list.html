@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>留言板</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7fa;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      margin: 0;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      margin-bottom: 20px;
+      width: 800px;
+    }
+
+    form input[type="text"],
+    form select,
+    form button {
+      padding: 10px;
+      font-size: 1em;
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    form button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #fff;
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+
+    li:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    li a {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    li span {
+      display: block;
+      margin-top: 5px;
+      color: #777;
+      font-size: 0.9em;
+    }
+
+    .message-actions {
+      margin-top: 10px;
+    }
+
+    .message-actions a,
+    .message-actions button {
+      font-size: 0.9em;
+      padding: 5px 10px;
+      margin-right: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+      border-radius: 4px;
+    }
+
+    .message-actions a {
+      background-color: #f39c12;
+    }
+
+    .message-actions a:hover {
+      background-color: #e67e22;
+    }
+
+    .message-actions button {
+      background-color: #e74c3c;
+      border: none;
+    }
+
+    .message-actions button:hover {
+      background-color: #c0392b;
+    }
+
+  </style>
+</head>
+<body>
+<h1>欢迎来到柿子匿名贴吧，<span th:text="${session.user.username}"></span></h1>
+
+<div class="container">
+  <form action="/message/search" method="get">
+    <input type="text" name="keyword" placeholder="搜索留言" />
+    <button type="submit">搜索</button>
+  </form>
+
+  <!-- 在list.html中添加个人中心按钮 -->
+  <div class="container">
+    <!-- 其他内容 -->
+    <div class="form-footer">
+      <a href="/user/profile" class="back-link">个人中心</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="/message/add">发布留言</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="/message/top-today" class="back-link">今日热榜</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="https://www.baidu.com">百度一下</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="/message/weather-today" class="back-link">青岛天气</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="/user/sign-in">签到打卡</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="/message/about-us">关于我们</a>
+    </div>
+
+
+  </div>
+  <!-- list.html -->
+  <form action="/message/list" method="get">
+    <label for="category">分类:</label>
+    <select id="category" name="category">
+      <option value="">All</option>
+      <option th:each="category : ${categories}" th:text="${category}" th:value="${category}"></option>
+    </select>
+    <button type="submit">筛选</button>
+    <label for="timeFrame">时间范围:</label>
+    <select id="timeFrame" name="timeFrame">
+      <option value="">All</option>
+      <option value="1h">近一小时</option>
+      <option value="1d">近一天</option>
+      <option value="1w">近一周</option>
+      <option value="1m">近一个月</option>
+    </select>
+    <button type="submit">筛选</button>
+    <label for="sortByReplies">按回复数排序:</label>
+    <select id="sortByReplies" name="sortByReplies">
+      <option value="desc">由高到低</option>
+      <option value="asc">由低到高</option>
+    </select>
+    <button type="submit">筛选</button>
+  </form>
+
+  <!-- list.html -->
+  <ul>
+    <li th:each="message : ${messages}">
+      <a th:href="@{/message/detail/{id}(id=${message.id})}" th:text="${message.title}"></a>
+      <span th:text="${message.category}"></span>
+      <span th:text="${message.createdAt}"></span>
+      <span th:text="'用户编号: ' + ${message.userId}"></span>
+      <span th:text="'回复数目: ' + ${repliesCount.get(message.id)}"></span> <!-- 显示回复数目 -->
+
+      <!-- 使用session获取当前登录用户 -->
+      <div class="message-actions" th:if="${message.userId == session.user.id}">
+        <!-- 编辑按钮 -->
+        <a th:href="@{/message/edit/{id}(id=${message.id})}" onclick="return confirm('确定要编辑这条留言吗？')">编辑</a>
+
+        <!-- 删除按钮 -->
+        <form th:action="@{/message/delete/{id}(id=${message.id})}" method="get" style="display: inline-block;">
+          <input type="hidden" name="id" th:value="${message.id}" />
+          <button type="submit" onclick="return confirm('确定要删除这条留言吗？')">删除</button>
+        </form>
+      </div>
+    </li>
+  </ul>
+</div>
+</body>
+</html>

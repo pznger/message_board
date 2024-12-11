@@ -1,0 +1,226 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>个人中心</title>
+  <style>
+    /* 基本样式 */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    h1 {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      margin: 0;
+      text-align: center;
+    }
+
+    .container {
+      width: 80%;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+      font-size: 24px;
+      color: #34495e;
+      margin-bottom: 15px;
+    }
+
+    .profile-info p {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+
+    .profile-info span {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .message-list, .reply-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .message-list li, .reply-list li {
+      background-color: #ecf0f1;
+      border: 1px solid #d0d3d4;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-list a {
+      font-size: 18px;
+      color: #3498db;
+      text-decoration: none;
+      margin-bottom: 5px;
+    }
+
+    .message-list a:hover {
+      text-decoration: underline;
+    }
+
+    .message-list span, .reply-list span {
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+
+    .reply-list p {
+      font-size: 16px;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .message-list .created-at, .reply-list .created-at {
+      font-size: 14px;
+      color: #95a5a6;
+      margin-top: 5px;
+    }
+    .reply-content {
+      font-size: 1em;
+      color: #555;
+    }
+
+    .message-actions {
+      margin-top: 10px;
+    }
+
+    .message-actions a,
+    .message-actions button {
+      font-size: 0.9em;
+      padding: 5px 10px;
+      margin-right: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+      border-radius: 4px;
+    }
+
+    .message-actions a {
+      background-color: #f39c12;
+    }
+
+    .message-actions a:hover {
+      background-color: #e67e22;
+    }
+
+    .message-actions button {
+      background-color: #e74c3c;
+      border: none;
+    }
+
+    .message-actions button:hover {
+      background-color: #c0392b;
+    }
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .container {
+        width: 95%;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .section-title {
+        font-size: 20px;
+      }
+    }
+    /* 圆形头像样式 */
+    .avatar圆形 {
+      width: 100px; /* 根据需要调整 */
+      height: 100px; /* 根据需要调整 */
+      border-radius: 50%; /* 设置为圆形 */
+      object-fit: cover; /* 保证图片内容适应圆形 */
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>个人中心</h1>
+</div>
+
+<!-- profile.html -->
+<div class="container">
+  <h2>个人信息</h2>
+  <div>
+    <!-- 头像显示 -->
+    <div>
+<!--      <img th:src="@{${session.user.avatarUrl}}" alt="头像" class="avatar圆形">-->
+      <img th:src="@{${session.user.avatarUrl} + '?t=' + ${#dates.createNow()}}" alt="头像" class="avatar圆形">
+    </div>
+    <p>用户名: <span th:text="${session.user.username}"></span></p>
+    <p>邮箱: <span th:text="${session.user.email}"></span></p>
+    <p>注册时间: <span th:text="${session.user.createdAt}"></span></p>
+    <p>匿名编号: <span th:text="${session.user.id}"></span></p>
+  </div>
+</div>
+
+
+<div class="container">
+  <h2>更新密码</h2>
+  <form th:action="@{/user/change-password}" method="get">
+    <label for="oldPassword">旧密码:</label>
+    <input type="password" id="oldPassword" name="oldPassword" required/><br/>
+    <label for="newPassword">新密码:</label>
+    <input type="password" id="newPassword" name="newPassword" required/><br/>
+    <label for="confirmPassword">确认新密码:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" required/><br/>
+    <button type="submit">更改密码</button>
+  </form>
+  <h2>更新头像</h2>
+  <!-- 头像上传表单 -->
+  <form th:action="@{/user/upload-avatar}" method="post" enctype="multipart/form-data">
+    <input type="file" name="avatar" required>
+    <button type="submit">上传头像</button>
+    <p>头像路径: <span th:text="${session.user.avatarUrl}"></span></p>
+  </form>
+  <!-- profile.html -->
+    <h2>更新邮箱</h2>
+    <form th:action="@{/user/update-email}" method="post">
+      <label for="email">新邮箱:</label>
+      <input type="email" id="email" name="email" required/><br/>
+      <button type="submit">更新邮箱</button>
+    </form>
+</div>
+
+<div class="container">
+  <h2>我的帖子</h2>
+  <ul>
+    <li th:each="message : ${userMessages}">
+      <a th:href="@{/message/detail/{id}(id=${message.id})}" th:text="${message.title}"></a>
+      <span th:text="${message.createdAt}"></span>
+    </li>
+  </ul>
+</div>
+
+<div class="container">
+  <h2>我的回复</h2>
+  <ul>
+    <li th:each="reply : ${userReplies}">
+      <p th:utext="${reply.content}"></p>
+      <span th:utext="${reply.createdAt}"></span>
+    </li>
+  </ul>
+</div>
+<div class="container">
+  <a href="/message/list" class="back-link">返回消息列表</a>
+</div>
+</body>
+</html>
+
+

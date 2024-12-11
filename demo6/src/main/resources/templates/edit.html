@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>编辑留言</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 20px;
+    }
+
+    .form-container {
+      width: 60%;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .form-footer {
+      text-align: center;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      text-align: center;
+      text-decoration: none;
+      color: #4CAF50;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    .back-to-home a:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+<h1>编辑留言</h1>
+<div class="form-container">
+  <form th:action="@{/message/edit/{id}(id=${message.id})}" th:object="${message}" method="POST">
+    <input type="hidden" name="id" th:value="*{id}" />
+    <div>
+      <label for="title">标题:</label>
+      <input type="text" id="title" th:field="*{title}" required />
+    </div>
+    <div>
+      <label for="content">内容:</label>
+      <textarea id="content" th:field="*{content}" rows="5" required></textarea>
+    </div>
+    <div>
+      <label for="category">分类:</label>
+      <select id="category" th:field="*{category}" required>
+        <option value="军事">军事</option>
+        <option value="体育">体育</option>
+        <option value="科技">科技</option>
+        <option value="学习">学习</option>
+        <option value="汽车">汽车</option>
+        <option value="电子">电子</option>
+        <option value="娱乐">娱乐</option>
+        <option value="地狱笑话">地狱笑话</option>
+        <option value="美食">美食</option>
+        <option value="旅游">旅游</option>
+        <option value="其他">其他</option>
+      </select>
+    </div>
+    <div class="form-footer">
+      <button type="submit">保存修改</button>
+    </div>
+  </form>
+  <div class="form-footer">
+    <a href="/message/list" class="back-link">返回消息列表</a>
+  </div>
+</div>
+</body>
+</html>
