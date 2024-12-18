@@ -99,13 +99,21 @@ public class UserController {
     public String uploadAvatar(@RequestParam("avatar") MultipartFile avatarFile, HttpSession session) {
         User user = (User) session.getAttribute("user");
         try {
+            System.out.println("------------1------------");
+
             String avatarUrl = fileService.uploadFile(avatarFile);
+            System.out.println("------------2-------------");
+
             // 添加一个时间戳参数来防止缓存
             String uniqueAvatarUrl = avatarUrl + "?t=" + System.currentTimeMillis();
+            System.out.println("------------3-------------");
+
             user.setAvatarUrl(uniqueAvatarUrl);
+            System.out.println("------------4-------------");
             userService.updateAvatar(user.getId(), uniqueAvatarUrl);
         } catch (IOException e) {
             // 处理错误
+            System.out.println("-------5---------");
         }
         return "redirect:/user/profile";
     }

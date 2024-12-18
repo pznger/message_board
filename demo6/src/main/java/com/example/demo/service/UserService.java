@@ -40,6 +40,7 @@ public class UserService {
     // UserService.java
     public void updateAvatar(Long userId, String avatarUrl) {
         User user = userMapper.findUserById(userId);
+        System.out.println("avatarUrl"+avatarUrl);
         user.setAvatarUrl(avatarUrl);
         userMapper.updateUserAvatar(user);
     }
